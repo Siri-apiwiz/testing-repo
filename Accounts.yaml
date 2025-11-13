@@ -1,0 +1,3504 @@
+openapi: 3.0.1
+info:
+  title: Accounts
+  license:
+    name: Copywrite Open Banking Exchange 2023
+    url: https://opensource.org/licenses/MIT
+  version: v1.0.0
+  description: |
+    # Introduction
+     summary: Proposed Modified API for use in AccountList
+    This specification is in line with the version 0.3 of the specifcations found in confluence.
+
+    Use cases
+    During discussions on the version specificated above we expect to enhance the use cases as follows 
+    1) Validate the End Points for each type of API (Account Information, Payment Initiation and Subscription).
+    2) Validate the Fields needed for each end point.
+    3) Validate the Formats of the fields needed for each end point.
+    4) Validate any other Query parameters, header parameters for each end point.
+    5) Create Enumerations (code lists).
+    6) Create specific types and Create complex types.
+
+    Security and OAUTH
+    During discussion on the version specificated above we will fully define the OAUTH endpoints and update the security context.
+  termsOfService: ''
+  contact:
+    name: Tonik Support
+    url: https://developer.tonikbank.com
+    email: support@tonikbank.com
+paths:
+  /banking/accounts:
+    get:
+      operationId: listAccounts
+      tags:
+        - Accounts
+      summary: Obtain a list of accounts
+      description: The List Accounts API allows a third party to obtain a list of accounts on the request of a customer. A list of accounts will be returned, and should reflect the list of accounts that the same customer would see if they accessed their account through a mobile app or web browser. A query parameter allows the list of accounts returned to be filtered by "open" and "closed" status.
+      externalDocs:
+        url: ''
+        description: ''
+      parameters:
+        - $ref: '#/components/parameters/openStatus_query'
+        - $ref: '#/components/parameters/accountType_query'
+        - $ref: '#/components/parameters/isOwned_query'
+        - $ref: '#/components/parameters/x-v_header'
+        - $ref: '#/components/parameters/participantId_header'
+        - $ref: '#/components/parameters/accept_header'
+      responses:
+        '200':
+          description: Success
+          headers:
+            x-v:
+              description: The version of the API endpoint that the holder has responded with.
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBankingAccountList'
+        '400':
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '401':
+          description: Unauthorised
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '403':
+          description: Forbidden
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '404':
+          description: Not Found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '405':
+          description: Method Not Allowed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '406':
+          description: Not Acceptable
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '408':
+          description: Request Timeout
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '409':
+          description: Conflict
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '415':
+          description: Unsupported Media Type
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '422':
+          description: Unprocessable Entity
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '429':
+          description: Too Many Requests
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '503':
+          description: Service Unavailable
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+      callbacks: {}
+      deprecated: false
+      security:
+        - oauth2:
+            - read:created_transactions
+            - write:transactions
+            - read:accounts
+      servers: []
+    summary: ''
+    description: ''
+    servers: []
+    parameters: []
+  /banking/accounts/{accountId}/balance:
+    get:
+      operationId: getAccountBalance
+      tags:
+        - Accounts
+      summary: Obtain the balance for a single specified account
+      description: The Get Account Balance API allows a third party to obtain the balance for a specific account on the request of a customer. The request returns the current balance, but also returns other balances, such as the available balance and credit limits, if appropriate.
+      externalDocs:
+        url: ''
+        description: ''
+      parameters:
+        - $ref: '#/components/parameters/accountId_path'
+        - $ref: '#/components/parameters/openStatus_query'
+        - $ref: '#/components/parameters/accountType_query'
+        - $ref: '#/components/parameters/isOwned_query'
+        - $ref: '#/components/parameters/x-v_header'
+        - $ref: '#/components/parameters/participantId_header'
+        - $ref: '#/components/parameters/accept_header'
+      responses:
+        '200':
+          description: Success
+          headers:
+            x-v:
+              description: The version of the API endpoint that the holder has responded with.
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseBankingAccountBalanceList'
+        '400':
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '401':
+          description: Unauthorised
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '403':
+          description: Forbidden
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '404':
+          description: Not Found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '405':
+          description: Method Not Allowed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '406':
+          description: Not Acceptable
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '408':
+          description: Request Timeout
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '409':
+          description: Conflict
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '415':
+          description: Unsupported Media Type
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '422':
+          description: Unprocessable Entity
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '429':
+          description: Too Many Requests
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '503':
+          description: Service Unavailable
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+      callbacks: {}
+      deprecated: false
+      security: []
+      servers: []
+    summary: ''
+    description: ''
+    servers: []
+    parameters:
+      - $ref: '#/components/parameters/accountId'
+  /banking/accounts/{accountId}/transactions:
+    get:
+      operationId: getAccountTransactions
+      tags:
+        - Accounts
+      summary: Obtain transactions for a specific account.
+      description: The List Transactions API allows a third party to obtain a list of transactions for a specific account on the request of a customer. Each transaction can contain a types, status, description, posting date, amount, currency reference.
+      externalDocs:
+        url: ''
+        description: ''
+      parameters:
+        - $ref: '#/components/parameters/accountId_path'
+        - $ref: '#/components/parameters/oldestDateTime_query'
+        - $ref: '#/components/parameters/newestDateTime_query'
+        - $ref: '#/components/parameters/minAmount_query'
+        - $ref: '#/components/parameters/maxAmount_query'
+        - $ref: '#/components/parameters/x-v_header'
+        - $ref: '#/components/parameters/participantId_header'
+        - $ref: '#/components/parameters/accept_header'
+      responses:
+        '200':
+          description: Success
+          headers:
+            x-v:
+              description: The version of the API endpoint that the holder has responded with.
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBankingTransaction'
+        '400':
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '401':
+          description: Unauthorised
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '403':
+          description: Forbidden
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '404':
+          description: Not Found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '405':
+          description: Method Not Allowed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '406':
+          description: Not Acceptable
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '408':
+          description: Request Timeout
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '409':
+          description: Conflict
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '415':
+          description: Unsupported Media Type
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '422':
+          description: Unprocessable Entity
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '429':
+          description: Too Many Requests
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '503':
+          description: Service Unavailable
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+      callbacks: {}
+      deprecated: false
+      security: []
+      servers: []
+    summary: ''
+    description: ''
+    servers: []
+    parameters:
+      - $ref: '#/components/parameters/accountId'
+  /banking/accounts/{accountId}/{transactionId}:
+    get:
+      operationId: getAccountTransactionDetail
+      tags:
+        - Accounts
+      summary: Obtain detailed information on a transaction for a specific account
+      description: The List Transaction detail API allows a third party to obtain more detailed information (where it exists) on a specific transaction on the request of a customer. Transaction detail can contain information on the payee or payer, end to end IDs and purpose codes.
+      externalDocs:
+        url: ''
+        description: ''
+      parameters:
+        - $ref: '#/components/parameters/accountId_path'
+        - $ref: '#/components/parameters/transactionId_path'
+        - $ref: '#/components/parameters/x-v_header'
+        - $ref: '#/components/parameters/participantId_header'
+        - $ref: '#/components/parameters/accept_header'
+      responses:
+        '200':
+          description: Success
+          headers:
+            x-v:
+              description: The version of the API endpoint that the holder has responded with.
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBankingTransactionDetail'
+        '400':
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '401':
+          description: Unauthorised
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '403':
+          description: Forbidden
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '404':
+          description: Not Found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '405':
+          description: Method Not Allowed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '406':
+          description: Not Acceptable
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '408':
+          description: Request Timeout
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '409':
+          description: Conflict
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '415':
+          description: Unsupported Media Type
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '422':
+          description: Unprocessable Entity
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '429':
+          description: Too Many Requests
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+        '503':
+          description: Service Unavailable
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseErrorList'
+      callbacks: {}
+      deprecated: false
+      security: []
+      servers: []
+    summary: ''
+    description: ''
+    servers: []
+    parameters:
+      - $ref: '#/components/parameters/accountId'
+      - $ref: '#/components/parameters/transactionId'
+components:
+  schemas:
+    responseBankingAccountList:
+      uniqueItems: false
+      required:
+        - data
+        - links
+        - meta
+      type: object
+      properties:
+        data:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        links:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        meta:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        data:
+          accounts:
+            - accountId: accountId
+              accountType: accountType
+              creationDate: creationDate
+              displayName: displayName
+              nickname: nickname
+              openStatus: OPEN
+              isOwned: true
+              accountOwnership: UNKNOWN
+              maskedNumber: maskedNumber
+              productName: productName
+            - accountId: accountId
+              accountType: accountType
+              creationDate: creationDate
+              displayName: displayName
+              nickname: nickname
+              openStatus: OPEN
+              isOwned: true
+              accountOwnership: UNKNOWN
+              maskedNumber: maskedNumber
+              productName: productName
+        meta:
+          totalRecords: 0
+          totalPages: 6
+        links:
+          next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+      deprecated: false
+    ResponseBankingAccountBalanceList:
+      uniqueItems: false
+      required:
+        - data
+        - links
+        - meta
+      type: object
+      properties:
+        data:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        links:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        meta:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        data:
+          balances:
+            - accountId: accountId
+              currentBalance: currentBalance
+              availableBalance: availableBalance
+              creditLimit: creditLimit
+              currency: currency
+              purses: purses
+            - accountId: accountId
+              currentBalance: currentBalance
+              availableBalance: availableBalance
+              creditLimit: creditLimit
+              currency: currency
+              purses: purses
+        meta:
+          totalRecords: 0
+          totalPages: 6
+        links:
+          next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+      deprecated: false
+    responseBankingTransaction:
+      uniqueItems: false
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        meta:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        links:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        data:
+          bankingTransaction:
+            - accountId: accountId
+              transactionId: transactionId
+              transactionReferenceId: transactionReferenceId
+              executionDateTime: executionDateTime
+              transactionAmount: transactionAmount
+              transactionCurrency: transactionCurrency
+              isDetailAvailable: isDetailAvailable
+        meta:
+          totalRecords: 0
+          totalPages: 6
+        links:
+          next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+      deprecated: false
+    responseBankingTransactionDetail:
+      uniqueItems: false
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        meta:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        links:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        data:
+          bankingTransactionDetail:
+            - accountId: accountId
+              transactionId: transactionId
+              transactionReferenceId: transactionReferenceId
+              transactionType: transactionType
+              transactionStatus: transactionStatus
+              transactionDescription: transactionDescription
+              postingDateTime: postingDateTime
+              valueDateTime: valueDateTime
+              executionDateTime: executionDateTime
+              transactionAmount: transactionAmount
+              transactionCurrency: transactionCurrency
+              beneficiaryName: beneficiaryName
+              isDetailAvailable: isDetailAvailable
+        meta:
+          totalRecords: 0
+          totalPages: 6
+        links:
+          next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+      deprecated: false
+    responsePaymentInitiation:
+      uniqueItems: false
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        meta:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        links:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        data:
+          paymentInitiation:
+            - paymentStatus: paymentStatus
+              paymentId: paymentId
+              paymentFees: paymentFees
+              paymentFeeIndicator: paymentFeeIndicator
+        meta:
+          totalRecords: 0
+          totalPages: 6
+        links:
+          next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+      deprecated: false
+    responseBankingPaymentStatus:
+      uniqueItems: false
+      required:
+        - data
+        - links
+        - meta
+        - paymentStatus
+      properties:
+        data:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        meta:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        links:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        data:
+          paymentStatus:
+            - paymentStatus: paymentStatus
+              fundsAvailable: fundsAvailable
+        meta:
+          totalRecords: 0
+          totalPages: 6
+        links:
+          next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+      deprecated: false
+    responseBankingCreateCustomer:
+      uniqueItems: false
+      required:
+        - customerId
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        meta:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        links:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        data:
+          customerId:
+            - customerId: customerId
+        meta:
+          totalRecords: 0
+          totalPages: 6
+        links:
+          next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+      deprecated: false
+    responseBankingProductSubscribe:
+      uniqueItems: false
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        meta:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        links:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        data:
+          applicationId:
+            - applicationId: applicationId
+              redirectUrl: redirectUrl
+        meta:
+          totalRecords: 0
+          totalPages: 6
+        links:
+          next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+      deprecated: false
+    responseAuthorisationCode:
+      uniqueItems: false
+      required:
+        - code
+        - state
+      properties:
+        data:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        meta:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        links:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        data:
+          responseType:
+            - code: code
+              state: state
+        meta:
+          totalRecords: 0
+          totalPages: 6
+        links:
+          next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+      deprecated: false
+    responseAuthorisationToken:
+      uniqueItems: false
+      required:
+        - accessToken
+        - tokenType
+      properties:
+        data:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        meta:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        links:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        data:
+          responseType:
+            - accessToken: accessToken
+              tokenType: tokenType
+              expiresIn: expiresIn
+              refreshToken: refreshToken
+              scope: scope
+        meta:
+          totalRecords: 0
+          totalPages: 6
+        links:
+          next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+      deprecated: false
+    bankingAccount:
+      uniqueItems: false
+      required:
+        - accountId
+        - accountOwnership
+        - accountType
+        - creationDate
+        - displayName
+        - maskedNumber
+        - productName
+      type: object
+      properties:
+        accountId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The ID of the account (i.e. the Account Number) that the customer would see on a statement or other documentation.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: 000-0000-00000-0
+          deprecated: false
+        accountType:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The category to which a product or account belongs.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: SAVINGS ACCOUNT
+          deprecated: false
+          enum:
+            - SAVINGS ACCOUNT
+            - CURRENT ACCOUNT
+            - WALLET ACCOUNT
+            - LOAN ACCOUNT
+        creationDate:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Date that the account was created (if known)
+          format: ''
+          nullable: false
+          readOnly: false
+          example: yyyy/mm/dd
+          deprecated: false
+        displayName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The display name of the account as defined by the bank. This should not incorporate account numbers or PANs. If it does the values should be masked according to the rules of the MaskedAccountString common type.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: John
+          deprecated: false
+        nickname:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: A customer supplied nick name for the account.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: john123
+          deprecated: false
+        openStatus:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Open or closed status for the account. If not present then OPEN is assumed.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: OPEN
+          deprecated: false
+          enum:
+            - OPEN
+            - CLOSED
+            - ALL
+        isOwned:
+          uniqueItems: false
+          type: boolean
+          properties: {}
+          description: Flag indicating that the customer associated with the authorisation is an owner of the account. Does not indicate sole ownership, however. If not present then 'true' is assumed.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        accountOwnership:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Value indicating the number of customers that have ownership of the account, according to the data holder's definition of account ownership. Does not indicate that all account owners are eligible consumers.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: TWO PARTY
+          deprecated: false
+          enum:
+            - UNKNOWN
+            - ONE PARTY
+            - TWO PARTY
+            - MANY PARTY
+            - OTHER
+        maskedNumber:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: A masked version of the account. Whether BSB/Account Number, Credit Card PAN or another number.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        productName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The unique identifier of the account as defined by the data holder (akin to model number for the account).
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    bankingBalance:
+      uniqueItems: false
+      required:
+        - accountId
+        - availableBalance
+        - currentBalance
+      type: object
+      properties:
+        accountId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The ID of the account (i.e. the Account Number) that the customer would see on a statement or other documentation
+          format: ''
+          nullable: false
+          readOnly: false
+          example: 000-0000-00000-0
+          deprecated: false
+        currentBalance:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The balance of the account at this time. Should align to the balance available via other channels such as Internet Banking. Assumed to be negative if the customer has money owing.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: '2546.87'
+          deprecated: false
+        availableBalance:
+          uniqueItems: false
+          type: boolean
+          properties: {}
+          description: Represents the balance availability requested by the user. If the user wants to verify balance for a transfer of PHP500, then the result will either be TRUE for availability of funds needed, or false otherwise.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        creditLimit:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Object representing the maximum amount of credit that is available for this account. Assumed to be zero if absent.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: '10'
+          deprecated: false
+        currency:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The currency for the balance amounts. If absent assumed to be PHP.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: PHP
+          deprecated: false
+        purses:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Optional array of balances for the account in other currencies. Included to support accounts that support multi-currency purses such as Travel Cards
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    requestPaymentInitiation:
+      uniqueItems: false
+      required:
+        - payeeAccountID
+        - payeeAccountInstitutionCode
+        - payeeAccountName
+        - payerAccountID
+        - payerAccountInstitutionCode
+        - payerAccountInstitutionName
+        - payerAccountName
+        - paymentAmount
+        - paymentCurrency
+        - paymentDate
+        - paymentPurpose
+        - paymentReferenceId
+        - paymentType
+      type: object
+      properties:
+        paymentReferenceId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The reference given by the payer when the payment is made
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        paymentType:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Type of transfer
+          format: ''
+          nullable: false
+          readOnly: false
+          example: INTRABANK
+          deprecated: false
+          enum:
+            - INTRABANK
+            - INSTAPAY
+            - PESONET
+        paymentPurpose:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Purpose of the payment.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        paymentAmount:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Amount to be paid
+          format: ''
+          nullable: false
+          readOnly: false
+          example: '705000'
+          deprecated: false
+        paymentCurrency:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The currency for the payment amount.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: PHP
+          deprecated: false
+        paymentDate:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Date of payment intitation. Must be "today's" date
+          format: ''
+          nullable: false
+          readOnly: false
+          example: yyyy/mm/dd
+          deprecated: false
+        payerAccountId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Number that identifies the payer account
+          format: ''
+          nullable: false
+          readOnly: false
+          example: nnn-nnnnnn-nn
+          deprecated: false
+        payerAccountName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Name of the payer's account
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+          enum:
+            - CURRENT ACCOUNT
+            - SAVINGS ACCOUNT
+            - LOAN ACCOUNT
+            - WALLET ACCOUNT
+        payerAddress:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Address of the payer
+          format: ''
+          nullable: false
+          readOnly: false
+          example: Magallanes Dr
+          deprecated: false
+        payerAccountInstitutionCode:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Code that identifies the payer's bank that holds the account
+          format: ''
+          nullable: false
+          readOnly: false
+          example: UBx
+          deprecated: false
+        payerAccountInstitutionName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Name that identifies the payer's bank that holds the account
+          format: ''
+          nullable: false
+          readOnly: false
+          example: Universal Bank
+          deprecated: false
+        payeeAccountId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Number that identifies the payee account
+          format: ''
+          nullable: false
+          readOnly: false
+          example: nnn-nnnnnn-nn
+          deprecated: false
+        payeeAccountName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Name of the payee's account
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+          enum:
+            - CURRENT ACCOUNT
+            - SAVINGS ACCOUNT
+            - LOAN ACCOUNT
+            - WALLET ACCOUNT
+        payeeAddress:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Address of the payee
+          format: ''
+          nullable: false
+          readOnly: false
+          example: Muralla St
+          deprecated: false
+        payeeAccountInstitutionCode:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Code that identifies the payee's bank that holds the account
+          format: ''
+          nullable: false
+          readOnly: false
+          example: UBx
+          deprecated: false
+        payeeAccountInstitutionName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Name that identifies the payee's bank that holds the account
+          format: ''
+          nullable: false
+          readOnly: false
+          example: Universal Bank
+          deprecated: false
+      description: Body to initiate a payment
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    bankingTransaction:
+      uniqueItems: false
+      required:
+        - accountId
+        - executionDateTime
+        - isDetailAvailable
+        - transactionAmount
+        - transactionId
+      type: object
+      properties:
+        accountId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The ID of the account (i.e. the Account Number) that the customer would see on a statement or other documentation
+          format: ''
+          nullable: false
+          readOnly: false
+          example: 000-0000-00000-0
+          deprecated: false
+        transactionId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The transaction reference visible to the customer or requested by the customer. This may be the paymentReferenceID, if available.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        transactionReferenceId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The reference for the transaction provided by the originating institution. Empty string if no data provided. This may be the paymentReferenceID, if available.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        executionDateTime:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The time the transaction was executed by the originating customer, if available
+          format: ''
+          nullable: false
+          readOnly: false
+          example: yyyy/mm/dd , hh:mm:ss
+          deprecated: false
+        transactionAmount:
+          uniqueItems: false
+          type: number
+          properties: {}
+          description: The value of the transaction. Negative values mean money was outgoing from the account
+          format: ''
+          nullable: false
+          readOnly: false
+          example: 700
+          deprecated: false
+        transactionCurrency:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The currency for the transaction amount. PHP assumed if not present
+          format: ''
+          nullable: false
+          readOnly: false
+          example: PHP
+          deprecated: false
+        isDetailAvailable:
+          uniqueItems: false
+          type: boolean
+          properties: {}
+          description: True if extended information is available using the transaction detail end point. False if extended data is not available
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: Response body to a banking transaction request
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    bankingTransactionDetail:
+      uniqueItems: false
+      required:
+        - accountId
+        - executionDateTime
+        - isDetailAvailable
+        - transactionAmount
+        - transactionId
+        - transactionStatus
+        - transactionType
+      type: object
+      properties:
+        accountId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The ID of the account (i.e. the Account Number) that the customer would see on a statement or other documentation
+          format: ''
+          nullable: false
+          readOnly: false
+          example: 000-0000-00000-0
+          deprecated: false
+        transactionId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The transaction reference visible to the customer or requested by the customer. This may be the paymentReferenceID, if available.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        transactionReferenceId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The reference for the transaction provided by the originating institution. Empty string if no data provided. This may be the paymentReferenceID, if available.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        transactionType:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The type of the transaction
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        transactionStatus:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Status of the transaction whether pending or posted. Note that there is currently no provision in the standards to guarantee the ability to correlate a pending transaction with an associated posted transaction
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        transactionDescription:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The transaction description as applied by the financial institution
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        postingDateTime:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The time the transaction was posted. This field is Mandatory if the transaction has status POSTED. This is the time that appears on a standard statement
+          format: ''
+          nullable: false
+          readOnly: false
+          example: yyyy/mm/dd , hh:mm:ss
+          deprecated: false
+        valueDateTime:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Date and time at which assets become available to the account owner in case of a credit entry, or cease to be available to the account owner in case of a debit transaction entry
+          format: ''
+          nullable: false
+          readOnly: false
+          example: yyyy/mm/dd , hh:mm:ss
+          deprecated: false
+        executionDateTime:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The time the transaction was executed by the originating customer, if available
+          format: ''
+          nullable: false
+          readOnly: false
+          example: yyyy/mm/dd , hh:mm:ss
+          deprecated: false
+        transactionAmount:
+          uniqueItems: false
+          type: number
+          properties: {}
+          description: The value of the transaction. Negative values mean money was outgoing from the account
+          format: ''
+          nullable: false
+          readOnly: false
+          example: 700
+          deprecated: false
+        transactionCurrency:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The currency for the transaction amount. PHP assumed if not present
+          format: ''
+          nullable: false
+          readOnly: false
+          example: PHP
+          deprecated: false
+        beneficiaryName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Name of the merchant for an beneficiary of the payment
+          format: ''
+          nullable: false
+          readOnly: false
+          example: John
+          deprecated: false
+        isDetailAvailable:
+          uniqueItems: false
+          type: boolean
+          properties: {}
+          description: True if extended information is available using the transaction detail end point. False if extended data is not available
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: Response body to a banking transaction detail request
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    paymentInitiationSimple:
+      uniqueItems: false
+      required:
+        - paymentId
+        - paymentStatus
+      type: object
+      properties:
+        paymentStatus:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The payment status is filled with codes of the ISO 20022 data table.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: CANC:Cancelled Payment Initiation has been cancelled before execution
+          deprecated: false
+          enum:
+            - RECEIVED
+            - PENDING
+            - ACCEPTED
+            - REJECTED
+            - CANCELLED
+        paymentId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Resource identification of the generated payment.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        paymentFees:
+          uniqueItems: false
+          type: number
+          properties: {}
+          description: Can be used by the ASPSP to transport payment
+          format: ''
+          nullable: false
+          readOnly: false
+          example: 2.4
+          deprecated: false
+        paymentFeeIndicator:
+          uniqueItems: false
+          type: boolean
+          properties: {}
+          description: If equals true, the payment will involve specific payment cost as shown by the ASPSP in their  public price list or as agreed between ASPSP and  PSU. If equals false, the payment will not involve additional specific payment costs to the PSU. If this data element is not used, there is no  information about payment fees unless the fee  amount is given explicitly in the data element paymentFees.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: true
+          deprecated: false
+      description: Response body to a payment initiation
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    paymentStatus:
+      uniqueItems: false
+      required:
+        - paymentStatus
+      type: object
+      properties:
+        paymentStatus:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Retrieves the status of a payment. Example, the payment status 'CNCL' means 'Payment is Cancelled'.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: ACTC
+          deprecated: false
+          enum:
+            - ACTC
+            - RCVD
+            - PART
+            - RJCT
+            - PDNG
+            - ACCP
+            - ACSP
+            - ACSC
+            - ACPT
+            - ACCR
+            - RJCR
+            - ACWC
+            - PACR
+            - PDCR
+            - ACCC
+            - CNCL
+        fundsAvailable:
+          uniqueItems: false
+          type: boolean
+          properties: {}
+          description: This data element is contained, if supported by the ASPSP, if a funds check has been performed and if the paymentStatus is "ACCEPTED", "PENDING" or "RECEIVED".
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: Body of a payment status response
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    requestAuthorisationCode:
+      uniqueItems: false
+      required:
+        - clientId
+        - responseType
+        - state
+      type: object
+      properties:
+        responseType:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Indicates that a code is requested
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        clientId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The identification number software client from the setup process
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        redirectUri:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The URI to return to after the authorization is complete. A copy of this is stored in the directory
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        scope:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Values indicating what data is to be accessed
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        state:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: A random string generated by the Data User application
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: Body of an authorisation code request
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    requestAuthorisationToken:
+      uniqueItems: false
+      required:
+        - clientId
+        - code
+        - grantType
+      type: object
+      properties:
+        grantType:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The authorisation code
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        code:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The authorization code received from the authorization server.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        redirectUri:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Required if the redirect_uri parameter was used in the request. The value must be the same.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        clientId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The identification number software client from the setup process.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        clientSecret:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The client secret.  The client MAY omit the parameter if the client secret is an empty string.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    requestAuthorisationTokenRevoke:
+      uniqueItems: false
+      required:
+        - accessToken
+      type: object
+      properties:
+        accessToken:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The access token issued by the authorization server
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        tokenTypeHint:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: A hint about the type of the token submitted for revocation. Clients MAY pass this parameter in order to help the authorization server to optimize the token lookup. If the server is unable to locate the token using the given hint, it MUST extend its search across all of its supported token types. An authorization server MAY ignore this parameter, particularly if it is able to detect the token type automatically. This specification defines two such values:accessToken and refreshToken.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    bankingCreateCustomer:
+      uniqueItems: false
+      required:
+        - adress1
+        - birthDate
+        - birthPlace
+        - birthPlaceCountry
+        - city
+        - civilStatus
+        - country
+        - customerRiskLevel
+        - email
+        - firstName
+        - gender
+        - idCardNumber
+        - incomeType
+        - lastName
+        - middleName
+        - monthlyExpenses
+        - monthlyIncome
+        - motherMaidenName
+        - postalCode
+        - province
+        - religion
+        - sss
+        - state
+        - tin
+        - title
+      type: object
+      properties:
+        firstName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant first name
+          format: ''
+          nullable: false
+          readOnly: false
+          example: Mary
+          deprecated: false
+        middleName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant middle name
+          format: ''
+          nullable: false
+          readOnly: false
+          example: Pineda
+          deprecated: false
+        lastName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant last name
+          format: ''
+          nullable: false
+          readOnly: false
+          example: Cruz
+          deprecated: false
+        title:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant title.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+          enum:
+            - MR
+            - MRS
+            - MS
+            - PROFESSOR
+            - DOCTOR
+        gender:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant gender
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+          enum:
+            - MALE
+            - FEMALE
+        civilStatus:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant civil status
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+          enum:
+            - SINGLE
+            - WIDOWER
+            - FREE UNION
+            - MARRIED
+            - DIVORCED
+        religion:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant religion.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+          enum:
+            - CATHOLIC
+            - CHRISTIAN
+            - CONFUCIUS
+            - BUDDHA
+            - HINDU
+            - ISLAM
+            - OTHER
+        email:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Email is an active applicant���s email address
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        motherMaidenName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: motherMaidenName is applicant���s mother maiden name
+          format: ''
+          nullable: false
+          readOnly: false
+          example: Gonzalez
+          deprecated: false
+        address1:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Address of the applicant
+          format: ''
+          nullable: false
+          readOnly: false
+          example: Quintin Paredes Rd
+          deprecated: false
+        address2:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Second address of the applicant
+          format: ''
+          nullable: false
+          readOnly: false
+          example: Padre Burgos St
+          deprecated: false
+        city:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Name of the city or locality
+          format: ''
+          nullable: false
+          readOnly: false
+          example: Manila
+          deprecated: false
+        country:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: "A valid\_ISO 3166 Alpha-3\_country code. Philippines (PHL) is assumed if country is not present."
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        postalCode:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: A valid postal code of the correspondent address
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        province:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: A valid ISO 3166-2 province code.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: PH-ABR
+          deprecated: false
+          enum:
+            - PH-ABR
+            - PH-AGN
+            - PH-AGS
+            - PH-AKL
+            - PH-ALB
+            - PH-ANT
+            - PH-APA
+            - PH-AUR
+            - PH-BAS
+            - PH-BAN
+            - PH-BTN
+            - PH-BTG
+            - PH-BEN
+            - PH-BIL
+            - PH-BOH
+            - PH-BUK
+            - PH-BUL
+            - PH-CAG
+            - PH-CAN
+            - PH-CAS
+            - PH-CAM
+            - PH-CAP
+            - PH-CAT
+            - PH-CAV
+            - PH-CEB
+            - PH-NCO
+            - PH-COM
+            - PH-DAV
+            - PH-DAS
+            - PH-DVO
+            - PH-DAO
+            - PH-DIN
+            - PH-EAS
+            - PH-GUI
+            - PH-IFU
+            - PH-ILN
+            - PH-ILS
+            - PH-ILI
+            - PH-ISA
+            - PH-KAL
+            - PH-LUN
+            - PH-LAG
+            - PH-LAN
+            - PH-LAS
+            - PH-LEY
+            - PH-MDN
+            - PH-MDS
+            - PH-MAD
+            - PH-MAS
+            - PH-MSC
+            - PH-MSR
+            - PH-MOU
+            - PH-NEC
+            - PH-NER
+            - PH-NSA
+            - PH-NUE
+            - PH-NUV
+            - PH-MDC
+            - PH-MDR
+            - PH-PLW
+            - PH-PAM
+            - PH-PAN
+            - PH-QUE
+            - PH-QUI
+            - PH-RIZ
+            - PH-ROM
+            - PH-WSA
+            - PH-SAR
+            - PH-SIG
+            - PH-SOR
+            - PH-SCO
+            - PH-SLE
+            - PH-SUK
+            - PH-SLU
+            - PH-SUN
+            - PH-SUR
+            - PH-TAR
+            - PH-TAW
+            - PH-ZMB
+            - PH-ZAN
+            - PH-ZAS
+            - PH-ZSI
+            - PH-00
+        state:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: A valid ISO 3166-2 region code.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: PH-14
+          deprecated: false
+          enum:
+            - PH-14
+            - PH-05
+            - PH-02
+            - PH-40
+            - PH-13
+            - PH-03
+            - PH-07
+            - PH-15
+            - PH-11
+            - PH-08
+            - PH-01
+            - PH-41
+            - PH-00
+            - PH-10
+            - PH-12
+            - PH-06
+            - PH-09
+        mobilePhoneNumber:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant mobile phone number
+          format: ''
+          nullable: false
+          readOnly: false
+          example: 8123-4567
+          deprecated: false
+        countryCode:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: If absent, assumed to be Philippines (+63). The + should be included
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        telephoneNumber:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant telephone number. Only filled if the Applicant does not provide a mobile phone number
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        birthDate:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant birth date
+          format: ''
+          nullable: false
+          readOnly: false
+          example: yyyy/mm/dd
+          deprecated: false
+        birthPlace:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: birthPlace is the city place applicant was born
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        birthPlaceCountry:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant country of birth
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        monthlyIncome:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant monthly income
+          format: ''
+          nullable: false
+          readOnly: false
+          example: MORE_THAN_100M_TO_500M
+          deprecated: false
+          enum:
+            - UP_TO_1M
+            - MORE_THAN_1M_TO_5M
+            - MORE_THAN_5M_TO_10M
+            - MORE_THAN_10M_TO_25M
+            - MORE_THAN_25M_TO_50M
+            - MORE_THAN_50M_TO_100M
+            - MORE_THAN_100M_TO_500M
+            - MORE_THAN_500M_TO_1B
+            - MORE_THAN_1B
+        currency:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The currency for the monthly income amount. If absent assumed to be PHP
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        incomeType:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Where does the income comes from.
+          format: ''
+          nullable: false
+          readOnly: false
+          example: ALLOWANCE
+          deprecated: false
+          enum:
+            - INCOME
+            - INHERITANCE
+            - GRANT
+            - LOTTERY
+            - SAVINGS
+            - ALLOWANCE
+            - REMITTANCE
+            - PENSION
+            - OTHER_SOURCE
+        monthlyExpenses:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Applicant total monthly expenses
+          format: ''
+          nullable: false
+          readOnly: false
+          example: MORE_THAN_100M_TO_500M
+          deprecated: false
+          enum:
+            - UP_TO_1M
+            - MORE_THAN_1M_TO_5M
+            - MORE_THAN_5M_TO_10M
+            - MORE_THAN_10M_TO_25M
+            - MORE_THAN_25M_TO_50M
+            - MORE_THAN_50M_TO_100M
+            - MORE_THAN_100M_TO_500M
+            - MORE_THAN_500M_TO_1B
+            - MORE_THAN_1B
+        tin:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Tax identification number of the Philippines
+          format: ''
+          nullable: false
+          readOnly: false
+          example: 000-123-456-001
+          deprecated: false
+        sss:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Number of the Applicant in the Social Security System
+          format: ''
+          nullable: false
+          readOnly: false
+          example: 01-4567892-1
+          deprecated: false
+        idCardNumber:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: IDCardNumber is the applicant���s government ID number For Indonesia, it is the 16-digit KTP ID number
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        customerRiskLevel:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Risk assessment of the Applicant
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: Body to initiate a create customer request
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    bankingCreateCustomerResponse:
+      uniqueItems: false
+      required:
+        - customerId
+      type: object
+      properties:
+        customerId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Identification code of the applicant
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: Body of a Create Customer Response
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    bankingProductSubscribe:
+      uniqueItems: false
+      type: object
+      properties:
+        bankCode:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: BankCode is the selected bank���s code
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        clientConsent:
+          uniqueItems: false
+          type: boolean
+          properties: {}
+          description: clientConsent records if the client allows their customer data to be forwarded.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        customerId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Identification code of the applicant
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        returnUrl:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: ReturnURL is the return path for the app redirection after the account opening has been accomplished
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        failUrl:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: FailURL is the return path for the app redirection after the account opening failed
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        thirdPartyId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: thirdPartyId refers to the organization id which is integrated with the client
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        thirdPartyName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: thirdPartyName refers to the organization name which is integrated with the client
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: Body to request a product subscription
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    bankingProductSubscribeResponse:
+      uniqueItems: false
+      required:
+        - applicationId
+        - redirectUrl
+      type: object
+      properties:
+        applicationId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: applicationId shows the reference number to the application
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        redirectUrl:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: redirectURL to Tap or Bank���s web view
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    bankingKYCUpload:
+      uniqueItems: false
+      required:
+        - customerId
+        - documentName
+        - documentType
+        - expirationDate
+        - file
+        - idNumber
+        - idStatus
+        - idType
+        - issuer
+        - primaryId
+        - receivedDate
+      type: object
+      properties:
+        customerId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Identification code of the Applicant
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        documentName:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Name of the identification document submitted
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        documentType:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Type of document submitted
+          format: ''
+          nullable: false
+          readOnly: false
+          example: sss number
+          deprecated: false
+        idType:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Type of ID submitted
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        idNumber:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Number of ID submitted
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        idStatus:
+          uniqueItems: false
+          type: boolean
+          properties: {}
+          description: True if the ID submitted is "VALID". False otherwise
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        issuer:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Entity responsible for issuing the ID
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        country:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: "A valid\_ISO 3166 Alpha-3\_country code. Philippines (PHL) is assumed if country is not present."
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        primaryId:
+          uniqueItems: false
+          type: boolean
+          properties: {}
+          description: True if the ID submitted is "PRIMARY". False otherwise
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        file:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Code of the correspondent file
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        expirationDate:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Legal ID expiration date
+          format: ''
+          nullable: false
+          readOnly: false
+          example: yyyy/mm/dd
+          deprecated: false
+        receivedDate:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Legal ID received date
+          format: ''
+          nullable: false
+          readOnly: false
+          example: yyyy/mm/dd
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    paymentStatusDefinitions:
+      uniqueItems: false
+      type: object
+      properties:
+        ACTC:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Accepted Technical Validation - Authentication and syntactical and semantical validation are successful.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        RCVD:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Received - Payment initiation has been received by the receiving agent.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        PART:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Partially Accepted - A number of transactions have been accepted, whereas another number of transactions have not yet achieved 'accepted' status.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        RJCT:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Rejected - Payment initiation or individual transaction included in the payment initiation has been rejected.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        PDNG:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Pending - Payment initiation or individual transaction included in the payment initiation is pending.  Further checks and status update will be performed.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        ACCP:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Accepted Customer Profile - Preceding check of technical validation was successful. Customer profile check was also successful.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        ACSP:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Accepted Settlement in Process - All preceding checks such as technical validation and customer profile were successful and therefore the payment initiation has been accepted for execution.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        ACSC:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Accepted Settlement Completed - Settlement on the debtor's account has been completed.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        ACPT:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Accepted - Request is accepted.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        ACCR:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Accepted Cancellation Request - Cancellation is accepted.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        RJCR:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Rejected Cancellation Request - Cancellation request is rejected
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        ACWC:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Accepted With Change - Instruction is accepted but a change will be made, such as date or remittance not sent.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        PACR:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Partially Accepted Cancellation Request - Cancellation is partially accepted.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        PDCR:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Pending Cancellation Request - Cancellation request is pending.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        ACCC:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Accepted Credit Settlement Completed - Settlement on the creditor's account has been completed.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        CNCL:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Payment Cancelled - Payment is cancelled.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    authorisationCode:
+      uniqueItems: false
+      type: object
+      properties:
+        responseType:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Indicates that a code is requested
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        clientId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The identification number software client from the setup process
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        redirectUri:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The URI to return to after the authorization is complete. A copy of this is stored in the directory
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        scope:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Values indicating what data is to be accessed
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        state:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: A random string generated by the Data User application
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    authorisationCodeResponse:
+      uniqueItems: false
+      type: object
+      properties:
+        code:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The authorisation code
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        state:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The same string generated by the Data User application
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    authorisationToken:
+      uniqueItems: false
+      required:
+        - clientId
+        - code
+        - grantType
+      type: object
+      properties:
+        grantType:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The authorisation code
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        code:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The authorization code received from the authorization server.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        redirectUri:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Required if the redirect_uri parameter was used in the request. The value must be the same.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        clientId:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The identification number software client from the setup process.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        clientSecret:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The client secret.  The client MAY omit the parameter if the client secret is an empty string.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    authorisationTokenResponse:
+      uniqueItems: false
+      required:
+        - accessToken
+        - tokenType
+      type: object
+      properties:
+        accessToken:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The access token issued by the authorization server
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        tokenType:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The access token type provides the client with the information required to successfully utilize the access token to make a protected resource request
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        expiresIn:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The lifetime in seconds of the access token. For example, the value "3600" denotes that the access token will expire in one hour from the time the response was generated.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        refreshToken:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Credential used to obtain access token. Used to obtain a new token after the previous one expires or becomes invalid
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        scope:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: Required, if not identical to the scope required by the client. Values indicating what data is to be accessed.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    authorisationTokenRevoke:
+      uniqueItems: false
+      required:
+        - accessToken
+      type: object
+      properties:
+        accessToken:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The access token issued by the authorization server
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        tokenTypeHint:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: A hint about the type of the token submitted for revocation. Clients MAY pass this parameter in order to help the authorization server to optimize the token lookup. If the server is unable to locate the token using the given hint, it MUST extend its search across all of its supported token types. An authorization server MAY ignore this parameter, particularly if it is able to detect the token type automatically. This specification defines two such values:accessToken and refreshToken.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    responseErrorList:
+      uniqueItems: false
+      required:
+        - errors
+      type: object
+      properties:
+        errors:
+          uniqueItems: false
+          type: array
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+          items:
+            uniqueItems: false
+            properties: {}
+            description: ''
+            format: ''
+            nullable: false
+            readOnly: false
+            deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    linksPaginated:
+      uniqueItems: false
+      required:
+        - self
+      type: object
+      properties:
+        first:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: URI to the first page of this set. Mandatory if this response is not the first page
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        prev:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: URI to the previous page of this set. Mandatory if this response is not the first page
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        next:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: URI to the next page of this set. Mandatory if this response is not the last page
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        last:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: URI to the last page of this set. Mandatory if this response is not the last page
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        next: next
+        last: last
+        prev: prev
+        first: first
+      deprecated: false
+    MetaPaginated:
+      uniqueItems: false
+      required:
+        - totalPages
+        - totalRecords
+      type: object
+      properties:
+        totalRecords:
+          uniqueItems: false
+          type: integer
+          properties: {}
+          description: The total number of records in the full set
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        totalPages:
+          uniqueItems: false
+          type: integer
+          properties: {}
+          description: The total number of pages in the full set
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      example:
+        totalRecords: 0
+        totalPages: 6
+      deprecated: false
+    metaError:
+      uniqueItems: false
+      type: object
+      properties:
+        urn:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The CDR error code URN which the application-specific error code extends. Mandatory if the error `code` is an application-specific error rather than a standardised error code.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: Additional data for customised error codes
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    errors:
+      uniqueItems: false
+      required:
+        - code
+        - detail
+        - title
+      type: object
+      properties:
+        code:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: The code of the error encountered. Where the error is specific to the respondent, an application-specific error code, expressed as a string value. If the error is application-specific, the URN code that the specific error extends must be provided in the meta object. Otherwise, the value is the error code URN.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        title:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: A short, human-readable summary of the problem that MUST NOT change from occurrence to occurrence of the problem represented by the error code.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        detail:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: A human-readable explanation specific to this occurrence of the problem.
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+        meta:
+          uniqueItems: false
+          properties: {}
+          description: ''
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+    HTTPheader:
+      uniqueItems: false
+      required:
+        - participantIdentificationNumber
+      type: object
+      properties:
+        participantIdentificationNumber:
+          uniqueItems: false
+          type: string
+          properties: {}
+          description: a unique identifier issued by the Pilot Administrator
+          format: ''
+          nullable: false
+          readOnly: false
+          deprecated: false
+      description: ''
+      format: ''
+      nullable: false
+      readOnly: false
+      deprecated: false
+  responses: {}
+  parameters:
+    accountId:
+      in: path
+      required: true
+      schema:
+        type: string
+      name: accountId
+    transactionId:
+      in: path
+      required: true
+      schema:
+        type: string
+      name: transactionId
+    authorization:
+      in: header
+      description: The jwt token received from OpenBanking consent Management API
+      required: true
+      deprecated: false
+      style: simple
+      explode: false
+      allowReserved: false
+      schema:
+        uniqueItems: false
+        type: string
+        properties: {}
+        description: ''
+        format: ''
+        nullable: false
+        readOnly: false
+        deprecated: false
+      example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJSZXNvdXJjZW93bmVyIjoiQ3VzdG9tZXIiLCJTdGF0dXMiOiJhcHByb3ZlZCIsInN1YiI6InN1YmplY3Qtc3ViamVjdCIsImF1ZCI6WyJhdWRpZW5jZTEiLCJhdWRpZW5jZTIiXSwiQ3VzdGlkIjoiMTIzNCIsInNjb3BlIjoiYmFua2luZzphY2NvdW50cy5iYXNpYy5yZWFkIiwiaXNzIjoidXJuOlwvXC9hcGlnZWUtZWRnZS1KV1QtcG9saWN5LXRlc3QiLCJSZXNvdXJjZXNlcnZlciI6IkJhbmsiLCJEdXJhdGlvbiI6IjM1OTkiLCJleHAiOjE2OTk1OTA1MzAsImlhdCI6MTY5OTU5MDQ3MCwianRpIjoiZTdhYTkxZWYtMjBjMy00MjliLTkyZWMtN2VmYWRmZWRmMWM0In0.u5VreI1_8p3t7tjkRdCD5kqqxsGMW-Eo5Qv1apdGTAw
+      name: authorization
+    openStatus_query:
+      in: query
+      description: Used to filter results according to open/closed status. Values can be OPEN, CLOSED or ALL. If absent then ALL is assumed.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        enum:
+          - ALL
+          - CLOSED
+          - OPEN
+        default: ALL
+      name: openStatus
+    accountType_query:
+      in: query
+      description: Used to filter results on the accountType field applicable to accounts. Any one of the valid values for this field can be supplied. If absent then all accounts returned.)
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        enum:
+          - SAVINGS ACCOUNT
+          - CURRENT ACCOUNT
+          - WALLET ACCOUNT
+          - LOAN ACCOUNT
+      name: accountType
+    isOwned_query:
+      in: query
+      description: Filters accounts based on whether they are owned by the authorised customer. True for owned accounts, false for unowned accounts and absent for all accounts
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: boolean
+      name: isOwned
+    x-v_header:
+      in: header
+      description: Version of the API endpoint requested by the client. Must be set to a positive integer. If the version requested is not supported, then the holder must respond with a 406 Not Acceptable
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+      name: x-v
+    participantId_header:
+      in: header
+      description: A unique identifier issued by the Pilot Administrator.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+      name: participantId
+    accept_header:
+      in: header
+      description: If specified, the media type must be set to application/json, unless otherwise specified in the resource endpoint standard. If set to an unacceptable value the holder must respond with a 406 Not Acceptable. If not specified, or a wildcard (*/*) is provided, the default media type is application/json.
+      required: false
+      style: simple
+      explode: false
+      schema:
+        type: string
+      name: accept
+    accountId_path:
+      in: path
+      description: ID of the specific account requested
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+      name: accountId
+    oldestDateTime_query:
+      in: query
+      description: Constrain the transaction history request to transactions with effective time at or after this date/time. If absent defaults to newestTime minus 90 days. Format is aligned to string common type.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+      name: oldestDateTime
+    newestDateTime_query:
+      in: query
+      description: Constrain the transaction history request to transactions with effective time at or before this date/time. If absent defaults to newestTime minus 90 days. Format is aligned to string common type.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+      name: newestDateTime
+    minAmount_query:
+      in: query
+      description: Filter transactions to only transactions with amounts higher or equal to than this amount.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+      name: minAmount
+    maxAmount_query:
+      in: query
+      description: Filter transactions to only transactions with amounts less than or equal to than this amount.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+      name: maxAmount
+    transactionId_path:
+      in: path
+      description: ID of the specific transaction requested
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+      name: transactionId
+  examples: {}
+  requestBodies: {}
+  headers: {}
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: |
+        Transactions are authenticated using OAuth 2.0 strong customer authentication.
+
+        The Registration, Authorization and Token endpoints are available via your scheme's Open Banking Hub Register and Register API.
+      flows:
+        clientCredentials:
+          tokenUrl: https://3.110.150.170:9443/oauth2/token
+          scopes:
+            grant_type: client_credentials
+  links: {}
+  callbacks: {}
+servers:
+  - x-schema: https://
+    url: https://sandboxapi.tonikbank.com/v1/accountlist
+    x-name: https://sandboxapi.tonikbank.com/v1/accountlist
+    x-basePath: v1
+    description: Sandbox Server
+    variables: {}
+    x-hide: false
+security: []
+externalDocs:
+  description: Full Documentation of Colombian Open Finance API Draft Standard
+  url: https://www.example.com
+tags:
+  - name: APIs
+    description: |-
+      Names and definitions of the APIs.
+      * Accounts:The (Banking) Accounts API returns list or detail of bank accounts, account balances, account details, transactions and transaction details
+      * Payments:The (Banking) Payments API allows the creation and the cancellation of a payment, and to get the status that has been created
+      * Subscriptions:The Subscriptions API allows the creation of a customer record, and the creation of a customer account, along with the uploading of KYC data.
+      * Consent
+      * Authentication
+      * Configuration
+    externalDocs:
+      description: ''
+      url: ''
+  - name: Account Information API Use Cases
+    description: |-
+      Name, summary and description of each Account Information API use case.
+      * List Accounts:Obtain a list of accounts The List Accounts API allows a third party to obtain a list of accounts on the request of a customer. A list of accounts will be returned, and should reflect the list of accounts that the same customer would see if they accessed their account through a mobile app or web browser. A query parameter allows the list of accounts returned to be filtered by "open" and "closed" status.
+      * Get Account Balance:Obtain the balance for a single specified account The Get Account Balance API allows a third party to obtain the balance for a specific account on the request of a customer. The request returns the current balance, but also returns other balances, such as the available balance and credit limits, if appropriate.
+      * List Transactions:Obtain transactions for a specific account The List Transactions API allows a third party to obtain a list of transactions for a specific account on the request of a customer. Each transaction can contain a types, status, description, posting date, amount, currency reference.
+      * Get Transaction Detail:Obtain detailed information on a transaction for a specific account The List Transaction detail API allows a third party to obtain more detailed information (where it exists) on a specific transaction on the request of a customer. Transaction detail can contain information on the payee or payer, end to end IDs and purpose codes.
+    externalDocs:
+      description: ''
+      url: ''
+  - name: Payment Initiation API Use Cases
+    description: |-
+      Name, summary and description of each Payment Initiation API use case.
+      * Make Payment:Make a bank payment The Make Payment API allows a third party to initiate a payment on the request of a customer. A positive API response code indicated whether the payment initiation has been successful or not, i.e. whether the financial institution has successfully accepted the payment instruction, not whether the payment itself is credited correctly. The API returns a PaymentId, which is then used to track the progress of the payment itself.
+      * Cancel Payment:Cancel a bank payment The Cancel Payment API allows a third party to cancel a payment that they previously initiated, on the request of a customer. The API returns a PaymentId, which is then used to track the progress of the payment itself.
+      * Get Payment Status:Get the status of a payment The Get Payment Status API allows a third party to track a payment that they previously initiated, on the request of a customer. The PaymentId is used as the reference for the payment. The API returns a PaymentId, which is then used to track the progress of the payment itself. ISO20022 codes are used to show the status of the payment.
+    externalDocs:
+      description: ''
+      url: ''
+  - name: Subscription API Use Cases
+    description: |-
+      Name, summary and description of each Subscription API use case.
+      * Create Customer:Create a banking customer record The Create Customer API allows a third party to create a customer record, on the request of a customer. If successful, the API returns a Customer ID that allows that customer to be references subsequently.
+      * Upload KYC data:Upload the necessary KYC Documentation for a specific Customer The upload KYC data API allows a third party to upload required AML data to support the onboarding of the customer and allow a financial institution to meet its KYC obligations. The CustomerID is used as a reference to the Customer record.
+      * Create account:Subscribe to a banking account The create Account API allows a third party to request the opening of a bank account on the request of a customer. The CustomerID is used as a reference to the Customer record.
+    externalDocs:
+      description: ''
+      url: ''
